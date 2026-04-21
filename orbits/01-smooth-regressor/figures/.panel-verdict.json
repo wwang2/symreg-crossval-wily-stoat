@@ -1,0 +1,47 @@
+{
+  "panelist": "replica-panel",
+  "orbit": "01-smooth-regressor",
+  "replicas_reviewed": ["orbit/01-smooth-regressor", "orbit/01-smooth-regressor.r1"],
+  "ranking": [
+    {
+      "replica": "orbit/01-smooth-regressor",
+      "rank": 1,
+      "defensibility_score": 8.5,
+      "axes": {"claim_code": 10, "metric_honesty": 10, "reproducibility": 9, "figure_honesty": 9, "novelty": 7},
+      "strengths": [
+        "log.md's '35 candidates (1 GP + 10 spline + 24 KRR)' matches solution.py _pick_model() exactly",
+        "selected krr_g0.25_a0.001 reported in log (CV MSE 2.54e-03) matches figure (c) and solution.py's argmin selection",
+        "explicit determinism: KFold(shuffle=True, random_state=0), GP(random_state=0); all 3 seeds return 0.000299 because _test_data ignores seed by design",
+        "honest sigma^2-vs-bias^2 accounting: CV MSE (2.5e-03) is ~8x larger than test MSE (3e-04), correctly explained as 'sigma^2 + bias^2' vs 'bias^2 only'",
+        "explicit 'makes no novelty claim — correct, reproducible, honest baseline' positioning",
+        "residual panel (b) shows +-0.05 range with std 0.016, no cherry-picked axis scaling; noise-floor sigma^2=2.5e-3 annotated in panel (c)"
+      ],
+      "concerns": ["novelty score limited by intentionally-standard method choice"]
+    },
+    {
+      "replica": "orbit/01-smooth-regressor.r1",
+      "rank": 2,
+      "defensibility_score": 7.0,
+      "axes": {"claim_code": 8, "metric_honesty": 9, "reproducibility": 8, "figure_honesty": 7, "novelty": 8},
+      "strengths": [
+        "solution.py cleanly isolates a single GP-RBF+WhiteKernel fit; kernel bounds in log match code",
+        "fitted kernel 1.47^2 * RBF(length_scale=1.26) + WhiteKernel(noise_level=0.00163) reported explicitly",
+        "honest admission that learned noise 0.00163 < true sigma^2=0.0025 because kernel flexes to explain some noise",
+        "GP(random_state=0, n_restarts_optimizer=10) — deterministic",
+        "includes useful cross-method comparison (Chebyshev deg 11/13/15) that primary does not"
+      ],
+      "concerns": [
+        "figure/frontmatter mismatch: log.md frontmatter reports metric=0.000278 but figures/results.png and narrative.png display '0.00029'",
+        "solution.py runs only one GP fit; the K-fold CV numbers reported in log.md are not reproducible from solution.py alone (offline CV)",
+        "log's Chebyshev deg 13 + RidgeCV test MSE 0.000318 requires an alternative model path the committed solution.py does not support"
+      ]
+    }
+  ],
+  "consensus_winner": "orbit/01-smooth-regressor",
+  "winner_reason": "Primary's tighter claim-code coupling (the exact 35-candidate CV sweep and selected KRR config are visible in solution.py and rerun every import) outweighs r1's marginal metric edge (2.8e-4 vs 3.0e-4), especially given r1's figure/frontmatter '0.00029 vs 0.000278' rounding inconsistency and reliance on offline CV numbers that cannot be reproduced from the committed code.",
+  "cross_replica_inconsistencies": [
+    "primary reports CV MSE 2.54e-03 for selected KRR; r1 reports CV MSE 2.57e-03 for GP-RBF — both within the same ~5e-4 CV sampling noise, consistent with sigma^2=2.5e-3 floor",
+    "test MSE 0.000299 (primary) vs 0.000278 (r1): ~7% relative gap, well inside the ~10% MSE sampling noise expected on 500 test points at this signal level; both ~33-36x below the 0.01 target with no sign of test-set leakage since both read only data_train.npz"
+  ],
+  "overall_verdict": "CONSISTENT"
+}

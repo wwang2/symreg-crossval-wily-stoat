@@ -1,0 +1,27 @@
+{
+  "rounds": 1,
+  "invoked_via": "Agent(subagent_type=figure-critic)",
+  "verdict": "ACCEPT",
+  "overall_comment": "All three figures meet the publication bar: results.png is a clean 2x2 GridSpec with (a)-(d) labels, combines qualitative (fit + residuals) and quantitative (model selection + baseline) panels, passes the skim test with test MSE = 2.991e-04 and baseline clearly shown; narrative.png tells a crisp story; behavior.gif is a compelling animated sweep.",
+  "figures": [
+    {
+      "path": "orbits/01-smooth-regressor/figures/results.png",
+      "issues": [
+        {"severity": "MINOR", "issue": "panel (c) 'noise floor (sigma^2=2.5e-3)' annotation is ~8pt and visually easy to miss against the light gray bars", "fix": "bump the noise-floor annotation to fontsize=10 and/or add a thin vertical reference line at x=0.0025 in panel (c) so the noise floor is visually anchored, not just labeled"},
+        {"severity": "MINOR", "issue": "panel (c) bars are all near-identical gray except the selected model in blue; eye has to hunt to see the CV MSE differences between the top-6 models", "fix": "optional: add the numeric CV MSE value at the end of each bar (e.g. '0.00028' at bar tip) so the ranking is readable without squinting at bar length"}
+      ]
+    },
+    {
+      "path": "orbits/01-smooth-regressor/figures/narrative.png",
+      "issues": [
+        {"severity": "MINOR", "issue": "metric block sits in lower-right at the default font size; it is the payload of the figure and should be more prominent", "fix": "bump the metric annotation to fontsize=12-13 and/or color the 'test MSE = 2.991e-04' line in the method blue (#4C72B0) to link it visually to the fit curve"}
+      ]
+    },
+    {
+      "path": "orbits/01-smooth-regressor/figures/behavior.gif",
+      "issues": [
+        {"severity": "MINOR", "issue": "the first frame shows the overfit extreme but the measured test MSE is never annotated on any frame of the gif", "fix": "when the sweep animation lands on or passes through the CV optimum, add a transient text callout 'test MSE = 2.99e-04' near the fit curve for ~1 second, or hold the optimum frame for 2-3x longer at the end of the loop"}
+      ]
+    }
+  ]
+}

@@ -2,14 +2,15 @@
 
 Approach
 --------
-Gaussian Process regression with an RBF + White kernel fit on 200 noisy
-(x, y) training points. Hyperparameters (RBF length-scale, noise level,
-signal variance) are chosen by 5-fold cross-validation on the *training
-data only* — the evaluator's held-out test set is never used for tuning.
-
-We compare a small family of regressors (GP, smoothing spline, kernel
-ridge) by CV MSE and pick the lowest one. Fitted model is cached at
-module load time so `f(x)` is O(N_test) thereafter.
+5-fold cross-validation over a small family of classical smoothers
+(Gaussian process, smoothing spline, RBF kernel ridge) fit on 200
+noisy (x, y) training points, on the *training data only* — the
+evaluator's held-out test set is never used for tuning. The
+candidate with the best CV MSE is selected and refit on the full
+training set. On this data the sweep picks
+`KernelRidge(kernel='rbf', gamma=0.25, alpha=1e-3)`; GP and
+neighbouring KRR configs cluster within 5% of it. Fitted model is
+cached at module load time so `f(x)` is O(N_test) thereafter.
 """
 
 from __future__ import annotations

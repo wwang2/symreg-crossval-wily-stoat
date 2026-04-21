@@ -1,0 +1,54 @@
+{
+  "reviewer": "orbit-reviewer",
+  "orbit": "01-smooth-regressor",
+  "code_quality": {
+    "status": "has_issues",
+    "findings": [
+      {
+        "tag": "CODE ISSUE",
+        "text": "Module docstring said 'Gaussian Process regression with an RBF + White kernel' — but the code runs a full three-family CV (GP, spline, KRR) and the winning model is KernelRidge(gamma=0.25, alpha=1e-3). ADDRESSED: docstring updated in autorun round-2 polish commit."
+      },
+      {"tag": "CODE NOTE", "text": "CV grid runs at module import time, so the full 35-candidate grid evaluates once per seed invocation. Not a correctness issue — deterministic — but an efficiency note."},
+      {"tag": "CODE NOTE", "text": "No test-set leakage detected. solution.py reads only research/eval/data_train.npz; evaluator's hidden target and test x-grid are not referenced anywhere."},
+      {"tag": "CODE NOTE", "text": "All hyperparameters in the code match the log: KFold(n_splits=5, shuffle=True, random_state=0), gamma_grid includes 0.25, alpha_grid includes 1e-3, spline_grid matches, GP uses n_restarts_optimizer=4 and normalize_y=True."}
+    ]
+  },
+  "significance": {
+    "verified_metric": 0.000299,
+    "delta_baseline_abs": -1.3997,
+    "delta_baseline_rel_pct": 99.98,
+    "delta_best_abs": -1.3997,
+    "delta_best_rel_pct": 99.98,
+    "vs_threshold": "above",
+    "vs_2sigma": "above",
+    "assessment": "Significant",
+    "suspicious_improvement": true
+  },
+  "reproducibility": {"status": "clean", "findings": []},
+  "figures": {
+    "status": "has_issues",
+    "findings": [
+      {"tag": "FIGURE LAYOUT", "path": "orbits/01-smooth-regressor/figures/narrative.png", "text": "Single-panel figure; narrative.png is a secondary figure (not results.png) so this is not a hard violation, but duplicates content from results.png panel (a)."},
+      {"tag": "FIGURE ISSUE", "path": "orbits/01-smooth-regressor/figures/results.png", "text": "Panel (c) sigma^2 noise-floor annotation is easy to miss at 150 DPI; consider larger font or a vertical reference line."}
+    ]
+  },
+  "prose_quality": {
+    "score": "STRONG",
+    "leads_with_result": true,
+    "length_appropriate": true,
+    "before_after_comparison": true,
+    "conclusion_sentence": true,
+    "glossary_coverage_ok": false,
+    "word_count": 772,
+    "findings": [
+      {"severity": "MINOR", "issue": "Undefined abbreviations: 'CV', 'MSE', 'RBF' not expanded on first use.", "fix": "Expand on first use, or add a brief ## Glossary.", "tag": "PROSE ISSUE"}
+    ]
+  },
+  "quality_hints": {
+    "findings": [
+      {"tag": "QUALITY NOTE", "text": "suspicious_improvement=true is triggered by 99.98% vs baseline but entirely explained by context: the constant-mean baseline is a trivially weak predictor (MSE=1.42). Log proactively documents the ~4700x figure and the sigma^2 floor argument. No hype language."},
+      {"tag": "QUALITY NOTE", "text": "All three seeds return identical MSE (0.000299) because the evaluator's test x-grid is seed-independent by construction."}
+    ]
+  },
+  "synopsis": "Orbit 01-smooth-regressor applies 5-fold CV over a GP/spline/KRR family to the 200-point noisy training set, selecting KernelRidge(gamma=0.25, alpha=1e-3) with test MSE=2.99e-4 — 33x below target and fully deterministic across seeds. Significant and well-explained; the only substantive code finding (stale module docstring) was patched in round-2 polish. Prose and figures are strong; minor items are three unexpanded acronyms and a redundant single-panel narrative.png that duplicates results.png panel (a)."
+}
