@@ -1,0 +1,28 @@
+{
+  "rounds": 1,
+  "invoked_via": "Agent(subagent_type=figure-critic)",
+  "verdict": "ACCEPT",
+  "overall_comment": "All required artifacts present and publication-ready; figures clearly show MSE=2.78e-04 beating target=0.01 with baseline and Bayes floor annotated; only cosmetic minors remain.",
+  "figures": [
+    {
+      "path": "orbits/01-smooth-regressor/figures/results.png",
+      "issues": [
+        {"severity": "MINOR", "issue": "Suptitle vertical spacing is tight against the (a)/(b) panel titles in the top row.", "fix": "Pass y=1.02 to fig.suptitle(...) or increase top padding."},
+        {"severity": "MINOR", "issue": "Panel (b) bar-height annotation '1.46163' for the constant baseline sits close to the top edge.", "fix": "Expand y-axis upper limit or place the numeric label just below the bar top with va='top'."}
+      ]
+    },
+    {
+      "path": "orbits/01-smooth-regressor/figures/narrative.png",
+      "issues": [
+        {"severity": "MINOR", "issue": "Legend has 4 entries inside the plot area (style guide prefers <=3 inside, or outside).", "fix": "Move legend outside with bbox_to_anchor=(1.02, 1), or drop the 'GP uncertainty (+-2 sigma)' entry and annotate the band directly."},
+        {"severity": "MINOR", "issue": "Top-left multi-line annotation block (MSE / Target / Bayes floor / Fitted kernel) is dense.", "fix": "Reduce to 2-3 lines."}
+      ]
+    },
+    {
+      "path": "orbits/01-smooth-regressor/figures/behavior.gif",
+      "issues": [
+        {"severity": "MINOR", "issue": "Legend sits in lower-right inside the plot area with 4 entries; on some frames the true-signal curve passes under the legend.", "fix": "Move legend outside the axes or up to 'upper center' above the plot."}
+      ]
+    }
+  ]
+}
