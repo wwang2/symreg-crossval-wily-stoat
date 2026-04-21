@@ -1,0 +1,26 @@
+{
+  "orbit": "01-smooth-regressor",
+  "result": "VERIFIED",
+  "status": "ok",
+  "per_seed_status": [
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "reason": null,
+  "claimed": 0.000299,
+  "measured": 0.000299,
+  "aggregation": "mean",
+  "search_seeds_required": 3,
+  "seeds_passed": 3,
+  "seeds_total": 3,
+  "per_seed": [
+    0.000299,
+    0.000299,
+    0.000299
+  ],
+  "quality_signals": {},
+  "env_audit": {},
+  "components_section": "",
+  "figures_section": ""
+}
