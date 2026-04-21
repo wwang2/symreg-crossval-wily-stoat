@@ -132,3 +132,7 @@ scratch/
 *.tmp
 *.bak
 *.log
+
+# Research artefacts not meant to be versioned
+.re/cache/*.marker
+research/eval/__pycache__/
